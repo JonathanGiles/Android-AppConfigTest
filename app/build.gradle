@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "net.jonathangiles.android.appconfig"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled true
+    }
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+    packagingOptions {
+        // TODO we should try to make our jars more friendly so that this isn't necessary
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/NOTICE.md'
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/LICENSE.md'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+    }
+    dependencies {
+        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.4'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+//    implementation 'com.android.support:multidex:1.0.3'
+
+    // We use the azure-data-appconfiguration library as-is
+    implementation('com.azure:azure-data-appconfiguration:1.0.1') {
+        // Remove the netty dependency, replace with okhttp
+        exclude group: 'com.azure', module: 'azure-core-http-netty'
+    }
+    implementation 'com.azure:azure-core-http-okhttp:1.1.0'
+
+    // needed to support Jackson as Android doesn't include javax.xml.stream
+    implementation group: 'javax.xml.stream', name: 'stax-api', version: '1.0'
+
+    // Not needed to support okHttp, but without this we get 'NoClassDefFoundError' messages
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+}
