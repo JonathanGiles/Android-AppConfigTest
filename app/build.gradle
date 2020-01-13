@@ -14,12 +14,13 @@ android {
         // Required when setting minSdkVersion to 20 or lower
         multiDexEnabled true
     }
-//    buildTypes {
-//        release {
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
-//    }
+    buildTypes {
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
     packagingOptions {
         // TODO we should try to make our jars more friendly so that this isn't necessary
         exclude 'META-INF/INDEX.LIST'
@@ -49,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-//    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
     // We use the azure-data-appconfiguration library as-is
     implementation('com.azure:azure-data-appconfiguration:1.0.1') {
